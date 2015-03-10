@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <h3>New placeholder</h3>
+
+      <form role="form" action="/configuration/placeholder/{{placeholder.id}}" method="POST">
+        <div class="form-group">
+          <label for="inputName">Name</label>
+	  <input type="text" class="form-control" name="name" placeholder="Enter name of placeholder" value="{{placeholder.name}}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="inputName">Default value</label>
+	  <input type="text" class="form-control" name="default_value" placeholder="Enter default value of placeholder" value="{{placeholder.default_value}}">
+        </div>
+
+	<button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

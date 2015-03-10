@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <h3>New component</h3>
+
+      <form role="form" action="/configuration/component/{{component.id}}" method="POST">
+        <div class="form-group">
+          <label for="inputName">Name</label>
+	  <input type="text" class="form-control" name="name" placeholder="Enter name of component" value="{{component.name}}" required>
+        </div>
+
+        <h3>Jenkins checklists</h3>
+
+        {% for checklist in jenkins_checklists %}
+
+	<div class="checkbox"><label><input type="checkbox" name="jenkins_checklists" value="{{checklist.id}}" {% if checklist.id in marked_jenkins_checklists%}checked{% endif %}> {{checklist.name}}</label></div>
+
+        {% else %}
+
+        <small>There are currently no checklists</small>
+
+        {% endfor %}
+
+        <h3>Screenshot checklists</h3>
+
+        {% for checklist in screenshots_checklists %}
+
+	<div class="checkbox"><label><input type="checkbox" name="screenshots_checklists" value="{{checklist.id}}" {% if checklist.id in marked_screenshots_checklists%}checked{% endif %}> {{checklist.name}}</label></div>
+
+        {% else %}
+
+        <small>There are currently no checklists</small>
+
+        {% endfor %}
+
+        <h3>Plain checklists</h3>
+
+        {% for checklist in plain_checklists %}
+
+	<div class="checkbox"><label><input type="checkbox" name="plain_checklists" value="{{checklist.id}}" {% if checklist.id in marked_plain_checklists%}checked{% endif %}> {{checklist.name}}</label></div>
+
+        {% else %}
+
+        <small>There are currently no checklists</small>
+
+        {% endfor %}
+
+	<button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

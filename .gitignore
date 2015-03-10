@@ -1,0 +1,6 @@
+__pycache__
+.vagrant
+modules
+checklists.sql
+testdata.sql
+files/src/config.pyc

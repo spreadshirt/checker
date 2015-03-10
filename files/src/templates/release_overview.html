@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if not release.name %}
+
+  <div class="row">
+    <h3>No release with this name found</h3>
+  </div>
+
+{% else %}
+
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li class="active">{{ release.name }} release</li>
+</ol>
+
+  <script type=text/javascript>
+    function mark(type, id, status) {
+      $.post($SCRIPT_ROOT + '/release/{{ release.id }}/checklist/' + type + '/' + id + '/status', { status: status })
+        .done(function( data ) {
+          window.location.href = '/release/{{ release.id }}';
+        }).fail(function(data) {
+          alert("Updating the status failed");
+        });
+      }
+
+    function finalize_release(status) {
+      if (confirm("Are you sure you want to do it?")) {
+        $.post($SCRIPT_ROOT + '/archive/{{ release.id }}/status', { status: status })
+          .done(function( data ) {
+            window.location.href = '/';
+          }).fail(function(data) {
+            alert("Updating the status failed");
+          });
+        };
+      }
+
+  </script>
+
+  {% for entry in entries %}
+
+    {% if entry.type == 'jenkins' %}
+    <script type=text/javascript>
+    $(function() {
+	    $.getJSON($SCRIPT_ROOT + '/release/{{ release.id }}/jenkins?type={{ entry.type }}&id={{entry.id}}').success(function(data) {
+			html = '<img src=\'/static/' + data.color + '.png\'> <a href=\'' + data.url + '/job/' + data.job + '\'>{{entry.name}}</a>';
+			html += ' <small>' + data.healthReport + '</small>';
+			status = '{{entry.status}}';
+			if (status == 'passed') {
+			  html += '<button style="float: right;" type="button" class="btn btn-default" onclick="mark(\'{{ entry.type }}\', {{entry.id}},\'notrun\')">Mark not run</button>';
+			} else {
+			  html += '<button style="float: right;" type="button" class="btn btn-success" onclick="mark(\'{{ entry.type }}\', {{entry.id}},\'passed\')">Mark passed</button>';
+			  html += '<button style="float: right;" type="button" class="btn btn-danger" onclick="mark(\'{{ entry.type }}\', {{entry.id}},\'failed\')">Mark failed</button>';
+			}
+			$("#{{entry.type}}{{entry.id}}").html(html);
+			$("#{{entry.type}}{{entry.id}}").addClass('alert-{{entry.status}}');
+            })
+	    .error(function(data) {
+		    html = 'Failed to fetch jenkins job <b>{{entry.name}}</b>';
+		    $("#{{entry.type}}{{entry.id}}").html(html);
+		    $("#{{entry.type}}{{entry.id}}").addClass('alert-{{entry.status}}');
+	    });
+            return false;
+    });
+    </script>
+    <div class="alert" role="alert" id="{{entry.type}}{{entry.id}}">
+	    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading: {{entry.name}}...
+    </div>
+    {% elif entry.type == 'screenshots' %}
+    <div class="alert alert-{{entry.status}}" role="alert">
+	    <img src="/static/{{ entry.status }}.png"> <a href="/release/{{ release.id }}/checklist/{{ entry.type }}/{{ entry.id }}">{{ entry.name }}</a>
+    </div>
+    {% elif entry.type == 'plain' %}
+    <div class="alert alert-{{entry.status}}" role="alert">
+	    <img src="/static/{{ entry.status }}.png"> <a href="/release/{{ release.id }}/checklist/{{ entry.type }}/{{ entry.id }}">{{ entry.name }}</a>
+    </div>
+    {% endif %}
+
+  {% else %}
+
+  <div class="row">
+    <h3>There are currently no checklists</h3>
+  </div>
+
+  {% endfor %}
+  <button style="float: right;" type="button" class="btn btn-default" onclick="finalize_release('delete')">Delete release</button>
+  <button style="float: right;" type="button" class="btn btn-success" onclick="finalize_release('archive')">Archive release</button>
+
+{% endif %}
+{% endblock %}

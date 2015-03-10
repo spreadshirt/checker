@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <script type=text/javascript>
+    function deletion(name, id) {
+	    if(confirm('Are you sure you want to delete "' + name + '"?')) {
+		    $.ajax({
+			    url: $SCRIPT_ROOT + '/configuration/placeholder/' + id,
+			    type: 'DELETE',
+			    success: function(result) {
+				    window.location.reload();
+			    }
+		    });
+	    }
+    }
+  </script>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="btn-group pull-right" role="group">
+        <a class="btn btn-default" href="/configuration/placeholder">+ Create new placeholder</a>
+      </div>
+
+      <h3>Placeholders</h3>
+
+      <p>Placeholders are variables that can be set depending on the release.</p>
+
+      {% for placeholder in placeholders %}
+
+      <a href="/configuration/placeholder/{{placeholder.id}}">{{placeholder.name}}</a>
+      <span onclick="deletion('{{placeholder.name}}',{{placeholder.id}})" class="glyphicon glyphicon-trash"></span><br />
+
+      {% else %}
+
+      <small>There are currently no placeholders</small>
+
+      {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock %}

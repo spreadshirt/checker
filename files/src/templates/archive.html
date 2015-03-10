@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-releases.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <script type=text/javascript>
+    function retrieve_release(name, id) {
+      $.post($SCRIPT_ROOT + '/archive/' + name, { id: id })
+        .done(function( data ) {
+          window.location.href = '/archive/' + name;
+        }).fail(function(data) {
+          alert("Updating the status failed");
+        });
+      }
+  </script>
+
+
+  <div class="row">
+   <div class="col-md-10">
+      <div id="cal">
+        {% for month in cal %}
+          {% set current_month = loop.index %}
+          <div>
+            <h1>{{ ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][loop.index0] }} {{ year }}</h1>
+            <table class="table table-bordered">
+              {% for week in month %}
+                <tr>
+                  {% for date in week %}
+                    {% if date.month == current_month %}
+                      <td class="info">
+                    {% else %}
+                      <td class="active">
+                    {% endif %}
+                    {{ date.day }}
+                    {% for archived_release in archived_releases %}
+                      {% if date.day == archived_release.day|int and date.month == archived_release.month|int and date.year == archived_release.year|int %}
+                        <p>
+                          <button type="button" class="btn btn-primary btn-xs" onclick="retrieve_release(\'{{ archived_release.name }}\', {{archived_release.id}}">{{ archived_release.name }}</button>
+                        </p>                      
+                      {% endif %}
+                    {% endfor %}
+                    </td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+        {% endfor %}
+      </div>
+
+
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <h3>Create new job or choose existing one:</h3>
+
+      <form role="form" action="/configuration/checklist/jenkins_finish/{{id}}" method="POST">
+	<input type="hidden" name="name" value="{{name}}">
+	<input type="hidden" name="url" value="{{url}}">
+	<input type="hidden" name="login" value="{{login}}">
+	<input type="hidden" name="password" value="{{password}}">
+
+	<div class="form-group">
+          <label for="job">Job name</label>
+	  <div class="input-group">
+	    <span class="input-group-addon">checker_</span>
+	    <input class="form-control" name="job" placeholder="Enter name of job (how it should appear in Jenkins)" value="{{job}}" type="text">
+	  </div>
+	  <small>You can use placeholders: {% for placeholder in placeholders %}&#123;&#123;{{placeholder.name}}&#125;&#125; {% endfor %}</small>
+	</div>
+
+	<div class="form-group">
+	  <label for="urls">XML</label>
+	  <textarea name="xml" class="form-control" rows="15">{{xml}}</textarea>
+	  <small>You can use placeholders: {% for placeholder in placeholders %}&#123;&#123;{{placeholder.name}}&#125;&#125; {% endfor %}</small>
+	</div>
+
+	<button type="submit" class="btn btn-default pull-right">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

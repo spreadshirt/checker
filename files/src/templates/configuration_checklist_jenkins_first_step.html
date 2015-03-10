@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <h3>Create Jenkins checklist:</h3>
+
+      <form role="form" action="/configuration/checklist/jenkins_second_step/{{id}}" method="POST">
+        <div class="form-group">
+          <label for="name">Name</label>
+	  <input type="text" class="form-control" name="name" placeholder="Enter name of checklist" value="{{name}}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="name">URL of Jenkins host</label>
+	  <input type="text" class="form-control" name="url" placeholder="e.g. http://build.example.com/jenkins" value="{{url}}">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Login for HTTP authentication to Jenkins</label>
+	  <input type="text" class="form-control" name="login" placeholder="Enter username" value="{{login}}">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Password for HTTP authentication to Jenkins</label>
+	  <input type="password" autocomplete="off" class="form-control" name="password" placeholder="Enter username" value="{{password}}">
+        </div>
+
+	<button type="submit" class="btn btn-default pull-right">Continue</button>
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

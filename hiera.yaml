@@ -1,0 +1,16 @@
+:backends:
+  - yaml_data_in_modules
+  - yaml
+:yaml:
+  :datadir: /etc/puppet/environments/%{environment}/data/
+:hierarchy:
+  - local
+  - "%{::fqdn}"
+  - "%{context}-%{datacenter}-%{platform}-%{cluster}-%{hostname}"
+  - "%{context}-%{datacenter}-%{platform}-%{cluster}"
+  - "%{context}-%{datacenter}-%{platform}"
+  - "%{context}-%{datacenter}"
+  - "%{context}"
+  - test
+  - "common-%{platform}"
+  - common

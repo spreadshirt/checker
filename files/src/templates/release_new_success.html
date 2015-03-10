@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-releases.html' %}
+{% endblock %}
+
+{% block body %}
+
+<h3>New release: {{ release.name }}</h3>
+
+{% for step in steps %}
+
+<div class="row">
+	<div class="col-sm-12">{{ step|safe }}</div>
+</div>
+
+{% endfor %}
+
+<div class="btn-group pull-right" role="group">
+	<a class="btn btn-default" href="/release/{{release.id}}">Go to release</a>
+</div>
+
+{% endblock %}

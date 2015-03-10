@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if not release.name %}
+
+  <div class="row">
+    <h3>No release with this name found</h3>
+  </div>
+
+{% else %}
+
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li><a href="/release/{{ release.id }}">{{ release.name }} release</a></li>
+  <li class="active">{{ name }}</li>
+</ol>
+
+  {% if actual_urls %}
+    {% for url in actual_urls %}
+    <div class="row">
+      <div class="col-md-6">
+	  <div class="thumbnail" style="background-color: #EEE">
+            <a href="/screenshot?url={{actual_urls[loop.index-1]}}&grid={{grid}}&browser={{browser}}" target="_blank">
+	    <img src="/screenshot?url={{actual_urls[loop.index-1]}}&grid={{grid}}&browser={{browser}}" width="500"/></a>
+	    <div class="caption">
+	      <h4>Actual</h4>
+	      <img src="/static/{{browser}}.png" />
+              <a href="{{actual_urls[loop.index-1]}}">{{actual_urls[loop.index-1]}}</a>
+	    </div>
+	  </div>
+      </div>
+      <div class="col-md-6">
+	<div class="thumbnail" style="background-color: #EEE">
+            <a href="/screenshot?url={{expected_urls[loop.index-1]}}&grid={{grid}}&browser={{browser}}" target="_blank">
+            <img src="/screenshot?url={{expected_urls[loop.index-1]}}&grid={{grid}}&browser={{browser}}" width="500"/></a>
+	  <div class="caption">
+	    <h4>Expected</h4>
+	    <img src="/static/{{browser}}.png" />
+            <a href="{{expected_urls[loop.index-1]}}">{{expected_urls[loop.index-1]}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <script type=text/javascript>
+    function mark(status) {
+      $.post($SCRIPT_ROOT + '/release/{{ release.id }}/checklist/screenshots/{{id}}/status', { status: status })
+        .done(function( data ) {
+          window.location.href = '/release/{{ release.id }}';
+	}).fail(function(data) {
+	  alert("Updating the status failed");
+	});
+    }
+  </script>
+
+  <p>
+    <button type="button" class="btn btn-default" onclick="mark('notrun')">Mark not run</button>
+    <button type="button" class="btn btn-primary" onclick="mark('notneeded')">Mark not needed</button>
+    <button type="button" class="btn btn-success" onclick="mark('passed')">Mark passed</button>
+    <button type="button" class="btn btn-danger" onclick="mark('failed')">Mark failed</button>
+  </p>
+
+{% endif %}
+{% endblock %}

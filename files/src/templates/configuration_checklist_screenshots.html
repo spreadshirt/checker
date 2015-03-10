@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <h3>Create Screenshots checklist:</h3>
+
+      <form role="form" action="/configuration/checklist/screenshots/{{id}}" method="POST">
+        <div class="form-group">
+          <label for="name">Name</label>
+	  <input type="text" class="form-control" name="name" placeholder="Enter name of checklist" value="{{name}}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="grid">URL of Selenium Grid</label>
+	  <input type="text" class="form-control" name="grid" placeholder="http://example.com:4444/wd/hub" value="{{grid}}" required>
+        </div>
+
+	<div class="row">
+          <div class="form-group col-md-12">
+            <label>Browser</label>
+	  </div>
+	  <div class="form-group col-md-12">
+            <label class="radio-inline">
+	      <input type="radio" name="browser" id="inlineRadio1" value="CHROME" {% if browser == "CHROME" %}checked{% endif %}> <img src="/static/CHROME.png" /> Chrome
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="browser" id="inlineRadio2" value="FIREFOX" {% if browser == "FIREFOX" %}checked{% endif %}> <img src="/static/FIREFOX.png" /> Firefox
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="browser" id="inlineRadio3" value="INTERNETEXPLORER" {% if browser == "INTERNETEXPLORER" %}checked{% endif %}> <img src="/static/INTERNETEXPLORER.png" /> Internet Explorer
+            </label>
+	  </div>
+	</div>
+
+	<div class="row">
+	<div class="form-group col-md-6">
+	  <label for="urls">URLs (actual)</label>
+	  <textarea name="actual_urls" class="form-control" rows="5">{% for url in actual_urls %}{{url}}
+{% endfor %}</textarea>
+	</div>
+
+	<div class="form-group col-md-6">
+	  <label for="urls">URLs (expected)</label>
+	  <textarea name="expected_urls" class="form-control" rows="5">{% for url in expected_urls %}{{url}}
+{% endfor %}</textarea>
+	</div>
+	</div>
+
+	<small>Add one URL in each line (separate by new line). You can use the following placeholders: {% for placeholder in placeholders %}&#123;&#123;{{placeholder.name}}&#125;&#125; {% endfor %}</small>
+
+	<button type="submit" class="btn btn-default pull-right">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

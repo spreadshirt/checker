@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% if not release.name %}
+
+  <div class="row">
+    <h3>No release with this name found</h3>
+  </div>
+
+{% else %}
+
+  {% if not plain %}
+  <div class="row">
+    <h3>No checklist found</h3>
+  </div>
+  {% else %}
+  <ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/release/{{ release.id }}">{{ release.name }} release</a></li>
+    <li class="active">{{ plain.name }}</li>
+  </ol>
+
+  <p>
+  {{ plain.description|safe }}
+  </p>
+
+  <script type=text/javascript>
+    function mark(status) {
+      $.post($SCRIPT_ROOT + '/release/{{ release.id }}/checklist/plain/{{plain.id}}/status', { status: status })
+        .done(function( data ) {
+          window.location.href = '/release/{{ release.id }}';
+	}).fail(function(data) {
+	  alert("Updating the status failed");
+	});
+    }
+  </script>
+
+  <button type="button" class="btn btn-default" onclick="mark('notrun')">Mark not run</button>
+  <button type="button" class="btn btn-primary" onclick="mark('notneeded')">Mark not needed</button>
+  <button type="button" class="btn btn-success" onclick="mark('passed')">Mark passed</button>
+  <button type="button" class="btn btn-danger" onclick="mark('failed')">Mark failed</button>
+
+  {% endif %}
+{% endif %}
+{% endblock %}

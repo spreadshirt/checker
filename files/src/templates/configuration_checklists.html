@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <script type=text/javascript>
+    function deletion(name, type, id) {
+	    if(confirm('Are you sure you want to delete "' + name + '"?')) {
+		    $.ajax({
+			    url: $SCRIPT_ROOT + '/configuration/checklist/' + type + '/' + id,
+			    type: 'DELETE',
+			    success: function(result) {
+				    window.location.reload();
+			    }
+		    });
+	    }
+    }
+  </script>
+
+  <div class="row">
+      <div class="col-md-12">
+
+      <div class="btn-group pull-right" role="group">
+        <a class="btn btn-default" href="/configuration/checklist">+ Create new checklist</a>
+      </div>
+
+      <h3>Jenkins checklists</h3>
+
+      {% for checklist in jenkins_checklists %}
+
+      <a href="/configuration/checklist/jenkins_first_step/{{checklist.id}}">{{checklist.name}}</a>
+      <span onclick="deletion('{{checklist.name}}','jenkins_finish',{{checklist.id}})" class="glyphicon glyphicon-trash"></span><br />
+
+      {% else %}
+
+      <small>There are currently no checklists</small>
+
+      {% endfor %}
+
+      <h3>Screenshot checklists</h3>
+
+      {% for checklist in screenshots_checklists %}
+
+      <a href="/configuration/checklist/screenshots/{{checklist.id}}">{{checklist.name}}</a>
+      <span onclick="deletion('{{checklist.name}}','screenshots',{{checklist.id}})" class="glyphicon glyphicon-trash"></span><br />
+
+      {% else %}
+
+      <small>There are currently no checklists</small>
+
+      {% endfor %}
+
+      <h3>Plain checklists</h3>
+
+      {% for checklist in plain_checklists %}
+
+      <a href="/configuration/checklist/plain/{{checklist.id}}">{{checklist.name}}</a>
+      <span onclick="deletion('{{checklist.name}}','plain',{{checklist.id}})" class="glyphicon glyphicon-trash"></span><br />
+
+      {% else %}
+
+      <small>There are currently no checklists</small>
+
+      {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock %}

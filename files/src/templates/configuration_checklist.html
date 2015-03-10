@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-configuration.html' %}
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <h3>Choose type of checklist:</h3>
+
+      <div class="list-group">
+        <a href="/configuration/checklist/jenkins_first_step" class="list-group-item">
+          <h4 class="list-group-item-heading">Jenkins</h4>
+          <p class="list-group-item-text">A checklist item that shows the build state of a certain Jenkins job. You need to specify the hostname, login credentials and the name of the job</p>
+        </a>
+        <a href="/configuration/checklist/screenshots" class="list-group-item">
+          <h4 class="list-group-item-heading">Screenshots</h4>
+          <p class="list-group-item-text">A checklist item that makes screenshots of webpages. You need to specify the URLs.</p>
+        </a>
+         <a href="/configuration/checklist/plain" class="list-group-item">
+          <h4 class="list-group-item-heading">Plain</h4>
+          <p class="list-group-item-text">A checklist item that just shows an customizable HTML field</p>
+        </a>
+       </div>
+
+    </div>
+  </div>
+
+{% endblock %}

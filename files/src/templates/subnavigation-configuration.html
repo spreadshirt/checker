@@ -1,0 +1,11 @@
+    <nav class="navbar navbar-default" role="navigation" style="margin-top: -30px">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav sub-nav">
+            <li {% if "component" in request.path %}class="active"{% endif %}><a href="/configuration/components">Components</a></li>
+            <li {% if "checklist" in request.path %}class="active"{% endif %}><a href="/configuration/checklists">Checklists</a></li>
+            <li {% if "placeholder" in request.path %}class="active"{% endif %}><a href="/configuration/placeholders">Placeholders</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>

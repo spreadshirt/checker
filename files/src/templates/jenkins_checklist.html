@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-releases.html' %}
+{% endblock %}
+
+{% block body %}
+
+{% if not release.name %}
+
+  <div class="row">
+    <h3>No release with this name found</h3>
+  </div>
+
+{% else %}
+
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li><a href="/release/{{ release.id }}">{{ release.name }} release</a></li>
+  <li class="active">Jenkins check</li>
+</ol>
+
+
+{% endif %}
+{% endblock %}

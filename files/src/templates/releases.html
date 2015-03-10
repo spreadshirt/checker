@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block subnavigation %}
+{% include 'subnavigation-releases.html' %}
+{% endblock %}
+
+{% block body %}
+  <div class="row">
+   <div class="col-md-12">
+
+      <div class="btn-group pull-right" role="group">
+        <a class="btn btn-default" href="/release">+ Create new release</a>
+      </div>
+
+      {% for entry in entries %}
+
+
+      <div style="padding-top: 20px; padding-bottom: 5px;">
+	<a href="/release/{{ entry.id }}">{{ entry.name }} release</a>
+
+        <div class="progress">
+          <div class="progress-bar progress-bar-success progress-bar-striped" style="width: {{ entry.notneeded }}%">
+          </div>
+          <div class="progress-bar progress-bar-success" style="width: {{ entry.passed }}%">
+          </div>
+          <div class="progress-bar progress-bar-danger" style="width: {{ entry.failed }}%">
+          </div>
+        </div>
+  
+      </div>
+
+      {% else %}
+
+      <div class="row">
+        <h3>There are currently no releases</h3>
+      </div>
+
+      {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock %}
